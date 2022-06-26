@@ -37,6 +37,11 @@ class AuthController extends Controller
         return $this->userService->logout($request);
     }
 
+    public function verifyEmail(Request $request)
+    {
+        return $this->userService->verifyEmail(['id' => $request->route('id')]);
+    }
+
     public function me(Request $request)
     {
         return $this->userService->me($request);

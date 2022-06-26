@@ -9,6 +9,8 @@ use Illuminate\Auth\Events\Registered;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use App\Actions\Fortify\CreateNewUser;
 use Hash;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\RedirectResponse;
 
 class UserService extends Service
 {
@@ -30,15 +32,10 @@ class UserService extends Service
         
         try {
             event(new Registered($user = $this->creator->create($attributes)));
+            $this->guard->login($user);
         } catch (\Throwable $th) {
             return $this->errorResponse($th);
         }
-
-	    try {
-            $this->guard->login($user);
-	    } catch (\Throwable $th) {
-	        return $this->errorResponse($th);
-	    }
 
         return app(RegisterResponse::class);
     }
@@ -52,8 +49,10 @@ class UserService extends Service
         }
         
         /* アドレス、パスワードが正しいか検証 */
-        if (!$user || ! Hash::check($password, $user->password)) {
-            return $this->errorResponse(false, 'メールアドレスかパスワードに誤りがあります。ご確認の上再度お試しください。');
+        if (!$user) {
+            return $this->errorResponse(false, 'このメールアドレスは登録されていません。');
+        } elseif (!Hash::check($password, $user->password)) {
+            return $this->errorResponse(false, 'パスワードに誤りがあります。ご確認の上再度お試しください。');
         }
 
         /* メールアドレスが検証済みか確認 */
@@ -80,6 +79,17 @@ class UserService extends Service
         $request->session()->regenerateToken();
 
         return app(LogoutResponse::class);
+    }
+
+    public function verifyEmail($id): RedirectResponse
+    {
+        $user = $this->userRepository->getBy($id);
+        
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
+
+        return redirect(config('env.spa_url') . '?verified=1');
     }
 
     public function me($request)
