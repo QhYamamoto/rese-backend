@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  app:
+    ports:
+      - '80:80'
+    build: ./docker/app
+    container_name: rese-backend
+    volumes:
+      - ./rese-backend:/var/www/rese-backend
+    depends_on:
+      - db_testing
+      - mailhog
+    networks:
+      - rese
+
+  db_testing:
+    ports:
+      - 3307:3306
+    build: ./docker/db
+    container_name: rese-database-testing
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: resedb_testing
+      MYSQL_USER: rese
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./docker/db/data-testing:/var/lib/mysql
+    networks:
+      - rese
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: rese-mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - rese
+
+networks:
+  rese:
+    driver: bridge
