@@ -44,7 +44,6 @@ Route::middleware(['auth:sanctum', 'abilities:shop-owner'])->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     /* ユーザー */
     Route::prefix('/auth')->group(function () {
-        Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/user', [AuthController::class, 'me']);
     });
 
@@ -79,9 +78,17 @@ Route::middleware('auth:sanctum')->group(function () {
 /* ユーザー */
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
+Route::get('auth/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
 /* 店舗 */
 Route::prefix('/shops')->group(function () {
     Route::get('', [ShopController::class, 'index']);
     Route::get('/{id}', [ShopController::class, 'getById']);
+});
+
+
+Route::middleware('auth:sanctum', 'web')->group(function () {
+    Route::post('auth/logout', [AuthController::class, 'logout']);
 });
