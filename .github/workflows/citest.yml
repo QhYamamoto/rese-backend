@@ -1,0 +1,15 @@
+name: CI test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: echoTest
+        run: echo "Test"
