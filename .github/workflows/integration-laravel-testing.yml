@@ -2,6 +2,7 @@ name: Laravel testing
 
 on:
   push:
+    branches: testbranch
     paths:
       - '20220529yamamoto/rese-backend/*'
 
