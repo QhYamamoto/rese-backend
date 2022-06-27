@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Services;
+namespace Tests\Unit\Services;
 
 use App\Repositories\Reservation\ReservationRepository;
 use App\Repositories\Reservation\ReservationRepositoryInterface;
