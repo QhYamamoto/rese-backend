@@ -9,8 +9,26 @@ services:
     volumes:
       - ./rese-backend:/var/www/rese-backend
     depends_on:
+      - db
       - db_testing
       - mailhog
+    networks:
+      - rese
+
+  db:
+    ports:
+      - 3308:3306
+    build: ./docker/db
+    container_name: rese-database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: resedb
+      MYSQL_USER: rese
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
     networks:
       - rese
 
