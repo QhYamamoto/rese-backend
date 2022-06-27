@@ -3,7 +3,7 @@ name: CI test
 on:
   push:
     branches:
-      - yamamoto
+      - testbranch
 
 jobs:
   Test:
