@@ -3,7 +3,7 @@ name: Laravel testing
 on:
   push:
     paths:
-      - 'rese-backend/*'
+      - '20220529yamamoto/rese-backend/*'
 
 jobs:
   laravel-testing:
@@ -33,7 +33,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: rese-backend
+        working-directory: 20220529yamamoto/rese-backend
 
     steps:
       - uses: actions/checkout@v2
