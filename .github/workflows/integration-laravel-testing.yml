@@ -2,8 +2,6 @@ name: Laravel testing
 
 on:
   push:
-    branches:
-      - testbranch
     paths:
       - 'rese-backend/*'
 
