@@ -95,7 +95,7 @@ class ShopServiceTest extends TestCase
             ->andReturn(new User());
         
         $this->shopRepositoryMock
-            ->shouldReceive('getShops')
+            ->shouldReceive('getAsCollectionWhere')
             ->once()
             ->with('id', [])
             ->andReturn([]);
@@ -114,7 +114,7 @@ class ShopServiceTest extends TestCase
         $representative_id = 100;
 
         $this->shopRepositoryMock
-            ->shouldReceive('getShops')
+            ->shouldReceive('getAsCollectionWhere')
             ->once()
             ->with('representative_id', [$representative_id])
             ->andReturn([

@@ -21,20 +21,22 @@ class ReservationService extends Service
     {
         try {
             $data = $this->reservationRepository->getBy($id);
-            return $this->jsonResponse(compact('data'));
         } catch (\Throwable $th) {
             return $this->errorResponse($th);
         }
+        
+        return $this->jsonResponse(compact('data'));
     }
 
     public function getByUserId($user_id)
     {
         try {
             $data = $this->reservationRepository->getAsCollectionBy($user_id);
-            return $this->jsonResponse(compact('data'));
         } catch (\Throwable $th) {
             return $this->errorResponse($th);
         }
+
+        return $this->jsonResponse(compact('data'));
     }
 
     public function register($existingReservationAttributes, $newReservationAttributes)
@@ -45,8 +47,8 @@ class ReservationService extends Service
         } catch (\Throwable $th) {
             return $this->errorResponse($th);
         }
-
-        if ($existingReservation) {
+        
+        if ($existingReservation->resource) {
             return $this->errorResponse(false, 'すでに同一日時の予約が存在します。');
         }
 

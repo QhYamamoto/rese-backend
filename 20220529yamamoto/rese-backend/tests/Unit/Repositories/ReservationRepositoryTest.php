@@ -7,7 +7,8 @@ use Tests\TestCase;
 use App\Repositories\Reservation\ReservationRepository;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Reservation;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use App\Http\Resources\ReservationResource;
+use App\Http\Resources\ReservationCollection;
 
 class ReservationRepositoryTest extends TestCase
 {
@@ -35,7 +36,7 @@ class ReservationRepositoryTest extends TestCase
     {
         $createdData = $this->repository->create($this->attributes);
         $returnedData = $this->repository->getBy(['id' => $createdData['id']]);
-        $this->assertInstanceOf(Reservation::class, $returnedData);
+        $this->assertInstanceOf(ReservationResource::class, $returnedData);
         foreach ($this->attributes as $key => $attribute) {
             $this->assertEquals($attribute, $returnedData[$key]);
         }
@@ -43,9 +44,9 @@ class ReservationRepositoryTest extends TestCase
 
     public function testGetAsCollectionBy()
     {
-        $createdData = $this->repository->create($this->attributes);
+        $this->repository->create($this->attributes);
         $returnedData = $this->repository->getAsCollectionBy($this->attributes);
-        $this->assertInstanceOf(EloquentCollection::class, $returnedData);
+        $this->assertInstanceOf(ReservationCollection::class, $returnedData);
         foreach ($this->attributes as $key => $attribute) {
             $this->assertEquals($attribute, $returnedData[0][$key]);
         }

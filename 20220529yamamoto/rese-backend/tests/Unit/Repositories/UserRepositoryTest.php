@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repositories;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Repositories\User\UserRepository;
@@ -32,7 +33,7 @@ class UserRepositoryTest extends TestCase
         User::create($this->attributes);
 
         $data = $this->repository->getBy($this->attributes);
-        $this->assertInstanceOf(User::class, $data);
+        $this->assertInstanceOf(UserResource::class, $data);
         $this->assertEquals($data->name, $this->attributes['name']);
     }
 }

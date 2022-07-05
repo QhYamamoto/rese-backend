@@ -3,22 +3,30 @@
 namespace App\Repositories\Shop;
 
 use App\Models\Shop;
+use App\Http\Resources\ShopResource;
+use App\Http\Resources\ShopCollection;
 
 class ShopRepository implements ShopRepositoryInterface
 {
     public function getAll()
     {
-        return Shop::with(['region', 'genre'])->get();
+        return ShopCollection::make(
+            Shop::with(['region', 'genre'])->get(),
+        );
     }
 
     public function getById($condition, $necessaryData = [])
     {
-        return Shop::where($condition)->with($necessaryData)->first();
+        return ShopResource::make(
+            Shop::where($condition)->with($necessaryData)->first()
+        );
     }
 
-    public function getShops($column, $values)
+    public function getAsCollectionWhere($column, $values)
     {
-        return Shop::whereIn($column, $values)->with(['region', 'genre'])->get();
+        return ShopCollection::make(
+            Shop::whereIn($column, $values)->with(['region', 'genre'])->get()
+        );
     }
 
     public function create($attributes)
