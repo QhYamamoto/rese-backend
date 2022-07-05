@@ -4,7 +4,7 @@ on:
   push:
     branches: testbranch
     paths:
-      - '20220529yamamoto/docker/*'
+      - '20220529yamamoto/docker/**'
       - '20220529yamamoto/docker-compose.yml'
 
 jobs:
