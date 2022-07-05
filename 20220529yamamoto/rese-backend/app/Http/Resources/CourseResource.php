@@ -22,5 +22,3 @@ class CourseResource extends JsonResource
         ];
     }
 }
-
-/* CIテスト2 */
