@@ -7,7 +7,8 @@ use Tests\TestCase;
 use App\Repositories\Shop\ShopRepository;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Shop;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use App\Http\Resources\ShopResource;
+use App\Http\Resources\ShopCollection;
 
 class ShopRepositoryTest extends TestCase
 {
@@ -38,7 +39,7 @@ class ShopRepositoryTest extends TestCase
     {
         $this->repository->create($this->attributes);
         $data = $this->repository->getAll();
-        $this->assertInstanceOf(EloquentCollection::class, $data);
+        $this->assertInstanceOf(ShopCollection::class, $data);
         foreach ($this->attributes as $key => $attribute) {
             $this->assertEquals($attribute, $data[0][$key]);
         }
@@ -48,17 +49,17 @@ class ShopRepositoryTest extends TestCase
     {
         $data = $this->repository->create($this->attributes);
         $gotData = $this->repository->getById(['id' => $data['id']]);
-        $this->assertInstanceOf(Shop::class, $gotData);
+        $this->assertInstanceOf(ShopResource::class, $gotData);
         foreach ($this->attributes as $key => $attribute) {
             $this->assertEquals($attribute, $gotData[$key]);
         }
     }
 
-    public function testGetShops()
+    public function testGetAsCollectionWhere()
     {
         $this->repository->create($this->attributes);
-        $data = $this->repository->getShops('representative_id', [100]);
-        $this->assertInstanceOf(EloquentCollection::class, $data);
+        $data = $this->repository->getAsCollectionWhere('representative_id', [100]);
+        $this->assertInstanceOf(ShopCollection::class, $data);
         foreach ($this->attributes as $key => $attribute) {
             $this->assertEquals($attribute, $data[0][$key]);
         }

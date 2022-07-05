@@ -21,10 +21,11 @@ class ShopService extends Service
     {
         try {
             $data = $this->shopRepository->getAll();
-            return $this->jsonResponse(compact('data'));
         } catch (\Throwable $th) {
             return $this->errorResponse($th);
         }
+
+        return $this->jsonResponse(compact('data'));
     }
 
     public function getById($id, $representative_id = null)
@@ -46,7 +47,7 @@ class ShopService extends Service
         if ($representative_id && $data->representative_id !== +$representative_id) {
             return $this->errorResponse(false, 'この店舗の情報を表示することはできません。', 401);
         }
-        
+
         return $this->jsonResponse(compact('data'));
     }
 
@@ -59,13 +60,13 @@ class ShopService extends Service
         }
         
         /* ユーザーがお気に入り登録している店舗のIdを配列に格納 */
-        $shops_id = [];
+        $favoriteShopIds = [];
         foreach ($user->shop as $shop) {
-            array_push($shops_id, $shop->id);
+            array_push($favoriteShopIds, $shop->id);
         }
         
         try {
-            $data = $this->shopRepository->getShops('id', $shops_id);
+            $data = $this->shopRepository->getAsCollectionWhere('id', $favoriteShopIds);
             return $this->jsonResponse(compact('data'));
         } catch (\Throwable $th) {
             return $this->errorResponse($th);
@@ -75,7 +76,7 @@ class ShopService extends Service
     public function getMyShops($representative_id)
     {
         try {
-            $data = $this->shopRepository->getShops('representative_id', [$representative_id]);
+            $data = $this->shopRepository->getAsCollectionWhere('representative_id', [$representative_id]);
             return $this->jsonResponse(compact('data'));
         } catch (\Throwable $th) {
             return $this->errorResponse($th);

@@ -8,6 +8,7 @@ use Laravel\Fortify\Contracts\LogoutResponse;
 use Illuminate\Auth\Events\Registered;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use App\Actions\Fortify\CreateNewUser;
+use App\Http\Resources\UserResource;
 use Hash;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
@@ -94,6 +95,6 @@ class UserService extends Service
 
     public function me($request)
     {
-        return $this->jsonResponse(['user' => $request->user()]);
+        return $this->jsonResponse(['user' => new UserResource($request->user())]);
     }
 }

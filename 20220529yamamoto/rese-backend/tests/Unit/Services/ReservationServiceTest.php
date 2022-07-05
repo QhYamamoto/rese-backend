@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\Http\Resources\ReservationResource;
 use App\Repositories\Reservation\ReservationRepository;
 use App\Repositories\Reservation\ReservationRepositoryInterface;
 use App\Models\Reservation;
@@ -71,6 +72,7 @@ class ReservationServiceTest extends TestCase
         $status = $result->getStatusCode();
     
         $this->assertEquals(1, count($resultData));
+        $this->assertEquals($this->attributes, $resultData[0]);
         $this->assertEquals(200, $status);
     }
 
@@ -80,7 +82,7 @@ class ReservationServiceTest extends TestCase
 
         $this->repositoryMock
             ->shouldReceive([
-                'getBy' => null,
+                'getBy' => ReservationResource::make(null),
                 'create' => new Reservation($this->attributes),
             ])
             ->once();
