@@ -8,6 +8,7 @@ use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use App\Models\User;
 use App\Services\UserService;
+use App\Http\Resources\UserResource;
 use Tests\TestCase;
 use Mockery;
 use Hash;
@@ -54,7 +55,7 @@ class UserServiceTest extends TestCase
             ->shouldReceive('getBy')
             ->once()
             ->with(compact('email'))
-            ->andReturn($userMock);
+            ->andReturn(new UserResource($userMock));
 
         $result = $this->service->login(compact('email'), 'password');
 

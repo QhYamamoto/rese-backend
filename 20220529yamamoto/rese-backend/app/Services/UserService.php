@@ -48,9 +48,9 @@ class UserService extends Service
         } catch (\Throwable $th) {
             return $this->errorResponse($th);
         }
-        
+
         /* アドレス、パスワードが正しいか検証 */
-        if (!$user) {
+        if (!$user->resource) {
             return $this->errorResponse(false, 'このメールアドレスは登録されていません。');
         } elseif (!Hash::check($password, $user->password)) {
             return $this->errorResponse(false, 'パスワードに誤りがあります。ご確認の上再度お試しください。');
