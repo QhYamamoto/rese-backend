@@ -166,8 +166,8 @@ class ShopSeeder extends Seeder
 
         /* 既存の店舗画像を全取得、削除 */
         if (app()->isProduction()) {
-            $files = Storage::disk('s3')->files('env.s3_images_path'.'/*');
-            Storage::delete($files);
+            $files = Storage::disk('s3')->files(config('env.s3_images_path'));
+            Storage::disk('s3')->delete($files);
         } else {
             $files = Storage::files(config('env.local_images_path'));
             if (count($files)) {
