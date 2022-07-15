@@ -77,15 +77,15 @@ class ShopRequest extends FormRequest
             $tmpFilePath = sys_get_temp_dir() . '/' . Str::uuid()->toString();
             file_put_contents($tmpFilePath, $fileData);
             $tmpFile = new File($tmpFilePath);
-            $filename = $tmpFile->getFilename();
+            $fileName = $tmpFile->getFilename();
             
             /* UploadedFileに変換 */
             $file = new UploadedFile(
                 $tmpFile->getPathname(),
-                $filename,
+                $fileName,
                 $tmpFile->getMimeType(),
                 0,
-                true
+                true,
             );
             $all['image'] = $file;
         }

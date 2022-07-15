@@ -179,9 +179,14 @@ class ShopSeeder extends Seeder
 
         foreach ($shops as $index => $shop) {
             /* ランダムなファイル名を生成し、保存先のパスを指定、画像を保存 */
+            $image = Image::make($shop['image']);
             $fileName = Str::random().'.jpg';
-            $filePath = storage_path().'/app'.config('env.local_images_path').'/'.$fileName;
-            Image::make($shop['image'])->save($filePath);
+            if (app()->isProduction()) {
+                $image->storeAs(config('env.s3_images_path', $fileName, 's3'));
+            } else {
+                $filePath = storage_path().'/app'.config('env.local_images_path').'/'.$fileName;
+                $image->save($filePath);
+            }
 
             Shop::create([
                 'representative_id' => $representatives[$index]->id,
