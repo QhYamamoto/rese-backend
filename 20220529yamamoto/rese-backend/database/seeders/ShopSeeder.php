@@ -182,7 +182,7 @@ class ShopSeeder extends Seeder
             $image = Image::make($shop['image']);
             $fileName = Str::random().'.jpg';
             if (app()->isProduction()) {
-                $image->storeAs(config('env.s3_images_path'), $fileName, 's3');
+                Storage::disk('s3')->put(config('env.s3_images_path').'/'.$fileName, $image, 'public');
             } else {
                 $filePath = storage_path().'/app'.config('env.local_images_path').'/'.$fileName;
                 $image->save($filePath);
