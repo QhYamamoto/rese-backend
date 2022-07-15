@@ -166,7 +166,8 @@ class ShopSeeder extends Seeder
 
         /* 既存の店舗画像を全取得、削除 */
         if (app()->isProduction()) {
-            Storage::disk('s3')->delete('env.s3_images_path'.'/*');
+            $files = Storage::disk('s3')->files('env.s3_images_path'.'/*');
+            Storage::delete($files);
         } else {
             $files = Storage::files(config('env.local_images_path'));
             if (count($files)) {
@@ -182,7 +183,7 @@ class ShopSeeder extends Seeder
             $image = Image::make($shop['image']);
             $fileName = Str::random().'.jpg';
             if (app()->isProduction()) {
-                Storage::disk('s3')->put(config('env.s3_images_path').'/'.$fileName, $image, 'public');
+                Storage::disk('s3')->put(config('env.s3_images_path').'/'.$fileName, $image->encode(), 'public');
             } else {
                 $filePath = storage_path().'/app'.config('env.local_images_path').'/'.$fileName;
                 $image->save($filePath);
