@@ -120,23 +120,25 @@ class ShopService extends Service
     {
         if (app()->isProduction()) {  // 本番環境であればS3に保存
             try {
-                if ($existingData) {
+                if ($existingData) {  // 既存データが渡されている場合、その画像を削除
                     Storage::disk('s3')->delete(config('env.s3_images_path').'/'.$existingData->image);
                 }
-
+                /* S3に保存 */
                 Storage::disk('s3')->put(config('env.s3_images_path'), $image, 'public');
-                return $image->fileName;
+                /* ファイル名を返却 */
+                return $image->originalName;
             } catch (\Throwable $th) {
                 return $this->errorResponse($th);
             }
         } else {  // ローカル環境であればローカルストレージに保存
             try {
-                if ($existingData) {  // 既存データが渡されている場合、その画像を削除
+                if ($existingData) {
                     Storage::delete(config('env.local_images_path').'/'.$existingData->image);
                 }
+
                 /* 画像をストレージに保存、相対パスを変数に格納 */
                 $imagePath = $image->store(config('env.local_images_path'));
-                
+
                 /* ファイル名を返却 */
                 return basename($imagePath);
             } catch (\Throwable $th) {
