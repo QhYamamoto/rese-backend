@@ -124,8 +124,8 @@ class ShopService extends Service
                     Storage::disk('s3')->delete(config('env.s3_images_path').'/'.$existingData->image);
                 }
 
-                Storage::disk('s3')->put('/storage/images', $image, 'public');
-                return $image->filename;
+                Storage::disk('s3')->put(config('env.s3_images_path'), $image, 'public');
+                return $image->fileName;
             } catch (\Throwable $th) {
                 return $this->errorResponse($th);
             }
