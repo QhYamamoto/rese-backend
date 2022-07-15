@@ -165,9 +165,13 @@ class ShopSeeder extends Seeder
         ];
 
         /* 既存の店舗画像を全取得、削除 */
-        $files = Storage::allFiles(config('env.images_path'));
-        if (count($files)) {
-            Storage::delete($files);
+        if (app()->isProduction()) {
+            Storage::disk('s3')->delete('env.s3_images_path'.'/*');
+        } else {
+            $files = Storage::files(config('env.local_images_path'));
+            if (count($files)) {
+                Storage::delete($files);
+            }
         }
 
         /* 店舗代表者20人の配列を生成 */
@@ -176,7 +180,7 @@ class ShopSeeder extends Seeder
         foreach ($shops as $index => $shop) {
             /* ランダムなファイル名を生成し、保存先のパスを指定、画像を保存 */
             $fileName = Str::random().'.jpg';
-            $filePath = storage_path().'/app'.config('env.images_path').'/'.$fileName;
+            $filePath = storage_path().'/app'.config('env.local_images_path').'/'.$fileName;
             Image::make($shop['image'])->save($filePath);
 
             Shop::create([

@@ -5,5 +5,6 @@ return [
   'sendgrid_api_key' => env('SENDGRID_API_KEY'),
   'mail_from_address' => env('MAIL_FROM_ADDRESS'),
   'stripe_sk' => env('STRIPE_SK'),
-  'images_path' => env('IMAGES_PATH'),
+  'local_images_path' => env('LOCAL_IMAGES_PATH'),
+  's3_images_path' => env('S3_IMAGES_PATH'),
 ];

@@ -118,14 +118,30 @@ class ShopService extends Service
 
     public function storeImage($image, $existingData = null)
     {
-        /* データが渡されていれば、既存の画像を削除*/
-        if ($existingData) {
-            Storage::delete(config('env.images_path').'/'.$existingData->image);
+        if (app()->isProduction()) {  // 本番環境であればS3に保存
+            try {
+                if ($existingData) {
+                    Storage::disk('s3')->delete(config('env.s3_images_path').'/'.$existingData->image);
+                }
+
+                Storage::disk('s3')->put('/storage/images', $image, 'public');
+                return $image->filename;
+            } catch (\Throwable $th) {
+                return $this->errorResponse($th);
+            }
+        } else {  // ローカル環境であればローカルストレージに保存
+            try {
+                if ($existingData) {  // 既存データが渡されている場合、その画像を削除
+                    Storage::delete(config('env.local_images_path').'/'.$existingData->image);
+                }
+                /* 画像をストレージに保存、相対パスを変数に格納 */
+                $imagePath = $image->store(config('env.local_images_path'));
+                
+                /* ファイル名を返却 */
+                return basename($imagePath);
+            } catch (\Throwable $th) {
+                return $this->errorResponse($th);
+            }
         }
-        /* 画像をストレージに保存、相対パスを変数に格納 */
-        $imagePath = $image->store(config('env.images_path'));
-        
-        /* ファイル名を返却 */
-        return basename($imagePath);
     }
 }
