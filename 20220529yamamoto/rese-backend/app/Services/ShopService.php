@@ -124,7 +124,7 @@ class ShopService extends Service
                     Storage::disk('s3')->delete(config('env.s3_images_path').'/'.$existingData->image);
                 }
                 /* S3に保存 */
-                Storage::disk('s3')->put(config('env.s3_images_path'), $image, 'public');
+                Storage::disk('s3')->put(config('env.s3_images_path'), $image->encode(), 'public');
                 /* ファイル名を返却 */
                 return $image->originalName;
             } catch (\Throwable $th) {
