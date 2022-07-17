@@ -52,4 +52,25 @@ $app->singleton(
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| 環境に応じて参照する.envファイルを変更
+|--------------------------------------------------------------------------
+|
+| サーバーのホスト名から環境を識別し、参照する.envファイルを決定します。
+| 本プロジェクトでは開発環境としてlocalhostを、本番環境としてAWSのELBのドメインを
+| 指定しています。
+|
+*/
+
+switch ($_SERVER['HTTP_HOST'] ?? 'localhost') {
+    case 'localhost':
+        $app->loadEnvironmentFrom('.env.dev');
+        break;
+    
+    default:
+        $app->loadEnvironmentFrom('.env.prod');
+        break;
+}
+
 return $app;
