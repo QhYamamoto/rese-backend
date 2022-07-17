@@ -4,7 +4,7 @@ on:
   push:
     branches: testbranch
     paths:
-      - '20220529yamamoto/rese-backend/**'
+      - 'rese-backend/**'
 
 jobs:
   laravel-testing:
@@ -34,7 +34,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: 20220529yamamoto/rese-backend
+        working-directory: rese-backend
 
     steps:
       - uses: actions/checkout@v2
@@ -45,7 +45,7 @@ jobs:
           php-version: '7.4'
 
       - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+        run: php -r "file_exists('.env.dev') || copy('.env.example', '.env.dev');"
 
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
