@@ -43,17 +43,6 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
-| Return The Application
-|--------------------------------------------------------------------------
-|
-| This script returns the application instance. The instance is given to
-| the calling script so we can separate the building of the instances
-| from the actual running of the application and sending responses.
-|
-*/
-
-/*
-|--------------------------------------------------------------------------
 | 環境に応じて参照する.envファイルを変更
 |--------------------------------------------------------------------------
 |
@@ -72,5 +61,16 @@ switch ($_SERVER['HTTP_HOST'] ?? 'localhost') {
         $app->loadEnvironmentFrom('.env.prod');
         break;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Return The Application
+|--------------------------------------------------------------------------
+|
+| This script returns the application instance. The instance is given to
+| the calling script so we can separate the building of the instances
+| from the actual running of the application and sending responses.
+|
+*/
 
 return $app;
