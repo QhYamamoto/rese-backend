@@ -5,6 +5,7 @@ on:
     branches: testbranch
     paths:
       - 'src/**'
+      - '.github/workflows/integration-laravel-testing.yml'
 
 jobs:
   laravel-testing:
@@ -34,7 +35,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: rese-backend
+        working-directory: src
 
     steps:
       - uses: actions/checkout@v2

@@ -6,6 +6,7 @@ on:
     paths:
       - 'docker/**'
       - 'docker-compose.yml'
+      - '.github/workflows/integration-docker-testing.yml'
 
 jobs:
   docker-testing:
