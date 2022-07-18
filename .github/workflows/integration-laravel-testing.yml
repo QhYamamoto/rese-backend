@@ -4,7 +4,7 @@ on:
   push:
     branches: testbranch
     paths:
-      - 'rese-backend/**'
+      - 'src/**'
 
 jobs:
   laravel-testing:
