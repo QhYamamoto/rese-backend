@@ -46,7 +46,7 @@ jobs:
           php-version: '7.4'
 
       - name: Copy .env
-        run: php -r "file_exists('.env.dev') || copy('.env.example', '.env.dev');"
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
