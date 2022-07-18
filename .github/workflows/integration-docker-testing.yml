@@ -4,16 +4,13 @@ on:
   push:
     branches: testbranch
     paths:
-      - '20220529yamamoto/docker/**'
-      - '20220529yamamoto/docker-compose.yml'
+      - 'docker/**'
+      - 'docker-compose.yml'
+      - '.github/workflows/integration-docker-testing.yml'
 
 jobs:
   docker-testing:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: 20220529yamamoto
 
     steps:
       - uses: actions/checkout@v2

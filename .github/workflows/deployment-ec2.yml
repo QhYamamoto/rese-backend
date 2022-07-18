@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # IP取得ライブラリをインストール
       - name: Public IP Install
         id: ip
         uses: haythem/public-ip@v1.2
@@ -19,7 +18,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      # AWS CLIをインストール
       - name: AWS CLI install
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -27,7 +25,6 @@ jobs:
           sudo ./aws/install --update
           aws --version
 
-      # AWS CLIにキーを設定
       - name: AWS set Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -35,7 +32,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
-      # デプロイ
       - name: Deploy
         run: |
 

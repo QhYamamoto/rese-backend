@@ -7,7 +7,7 @@ services:
     build: ./docker/app
     container_name: rese-backend
     volumes:
-      - ./rese-backend:/var/www/rese-backend
+      - ./src:/var/www/rese-backend
     depends_on:
       - db
       - db_testing
