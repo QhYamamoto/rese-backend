@@ -54,7 +54,7 @@ $app->singleton(
 
 switch ($_SERVER['HTTP_HOST'] ?? 'localhost') {
     case 'localhost':
-        $app->loadEnvironmentFrom('.env.dev');
+        $app->loadEnvironmentFrom('.env');
         break;
     
     case 'rese-lb-1454305181.ap-northeast-1.elb.amazonaws.com':
