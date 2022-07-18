@@ -68,7 +68,7 @@ switch ($_SERVER['HTTP_HOST'] ?? 'localhost') {
         $app->loadEnvironmentFrom('.env.dev');
         break;
     
-    default:
+    case 'rese-lb-1454305181.ap-northeast-1.elb.amazonaws.com':
         $app->loadEnvironmentFrom('.env.prod');
         break;
 }
