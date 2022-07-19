@@ -18,7 +18,7 @@ class Course extends Model
         return $this->belongsTo(Shop::class);
     }
 
-    public function reservation()
+    public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }
