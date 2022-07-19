@@ -7,6 +7,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,20 +23,20 @@ use App\Http\Controllers\AdminController;
 /* 認証ガードあり */
 /* 管理者権限 */
 Route::middleware(['auth:sanctum', 'abilities:administrator'])->group(function () {
-    Route::post('/admin/representatives', [AdminController::class, 'registerRepresentative']);
+    Route::post('/admin/register', [AdminController::class, 'registerRepresentative']);
 });
 
 /* 店舗代表者権限 */
 Route::middleware(['auth:sanctum', 'abilities:shop-owner'])->group(function () {
     Route::prefix('/admin/shops')->group(function () {
-        Route::get('/{representative_id}', [AdminController::class, 'getMyShops']);
+        Route::get('/{representative_id}', [AdminController::class, 'getShopsByRepresentativeId']);
         Route::get('/{id}/{representative_id}', [AdminController::class, 'getShopDetail']);
         Route::post('', [AdminController::class, 'registerShop']);
         Route::put('/{id}', [AdminController::class, 'updateShop']);
     });
-    Route::prefix('admin/courses')->group(function () {
-        Route::post('', [AdminController::class, 'registerCourse']);
-        Route::delete('/{id}', [AdminController::class, 'destroyCourse']);
+    Route::prefix('courses')->group(function () {
+        Route::post('', [CourseController::class, 'register']);
+        Route::delete('/{id}', [CourseController::class, 'destroy']);
     });
     Route::put('/reservations/visit/{id}', [ReservationController::class, 'completeVisit']);
 });
