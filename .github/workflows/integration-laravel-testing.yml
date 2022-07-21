@@ -69,7 +69,7 @@ jobs:
       - name: Seeding Test
         run: php artisan db:seed
 
-      - name: Laravel PHPUnit Testing
+      - name: Laravel PHPUnit Test
         run: |
           php artisan config:clear
           php artisan test
