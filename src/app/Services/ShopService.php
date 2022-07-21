@@ -101,8 +101,8 @@ class ShopService extends Service
         if ($newImage) {
             /* 既存画像を削除、新規画像を保存し、後者のファイル名を$attributesに追加 */
             try {
-                $data = $this->shopRepository->getById(compact('id'));
-                $attributes['image'] = $this->storeImage($newImage, $data);
+                $existingData = $this->shopRepository->getById(compact('id'));
+                $attributes['image'] = $this->storeImage($newImage, $existingData->image);
             } catch (\Throwable $th) {
                 return $this->errorResponse($th);
             }
@@ -116,15 +116,15 @@ class ShopService extends Service
         }
     }
 
-    public function storeImage($image, $existingData = null)
+    public function storeImage($newImage, $existingImage = null)
     {
         if (app()->isProduction()) {  // 本番環境であればS3に保存
             try {
-                if ($existingData) {  // 既存データが渡されている場合、その画像を削除
-                    Storage::disk('s3')->delete(config('env.s3_images_path').'/'.$existingData->image);
+                if ($existingImage) {  // 既存データが渡されている場合、その画像を削除
+                    Storage::disk('s3')->delete(config('env.s3_images_path').'/'.$existingImage);
                 }
                 /* S3に保存 */
-                $imagePath = Storage::disk('s3')->putFile(config('env.s3_images_path'), $image, 'public');
+                $imagePath = Storage::disk('s3')->putFile(config('env.s3_images_path'), $newImage, 'public');
                 
                 /* ファイル名を返却 */
                 return basename($imagePath);
@@ -133,12 +133,12 @@ class ShopService extends Service
             }
         } else {  // ローカル環境であればローカルストレージに保存
             try {
-                if ($existingData) {
-                    Storage::delete(config('env.local_images_path').'/'.$existingData->image);
+                if ($existingImage) {
+                    Storage::delete(config('env.local_images_path').'/'.$existingImage);
                 }
 
                 /* 画像をストレージに保存、相対パスを変数に格納 */
-                $imagePath = $image->store(config('env.local_images_path'));
+                $imagePath = $newImage->store(config('env.local_images_path'));
 
                 /* ファイル名を返却 */
                 return basename($imagePath);

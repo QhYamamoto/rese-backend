@@ -98,7 +98,7 @@ class ReservationService extends Service
         try {
             $this->charge->create($payment);
         } catch (\Throwable $th) {
-            return $this->errorResponse($th, '支払処理に失敗しました。時間をおいてから再度お試しください。', 422);
+            return $this->errorResponse($th, '支払い処理に失敗しました。時間をおいてから再度お試しください。');
         }
 
         /* 該当レコードのadvance_paymentカラムをtrueに更新 */
