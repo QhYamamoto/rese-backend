@@ -53,6 +53,9 @@ class Handler extends ExceptionHandler
                     case 404:
                         $errorMessage = __('このページは存在しません。');
                         break;
+                    case 405:
+                        $errorMessage = __('この操作は許可されていません。');
+                        break;
                     case 419:
                         $errorMessage = __('ページの有効期限が切れています。');
                         break;
