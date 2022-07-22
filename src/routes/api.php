@@ -41,7 +41,7 @@ Route::middleware(['auth:sanctum', 'abilities:shop-owner'])->group(function () {
     Route::put('/reservations/visit/{id}', [ReservationController::class, 'completeVisit']);
 });
 
-/* 一般権限(認証のみ) */
+/* 一般権限 */
 Route::middleware('auth:sanctum')->group(function () {
     /* ユーザー */
     Route::get('/auth/user', [AuthController::class, 'me']);
@@ -73,6 +73,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
+Route::middleware('auth:sanctum', 'web')->group(function () {
+    Route::post('auth/logout', [AuthController::class, 'logout']);
+});
+
 /* 認証ガードなし */
 /* ユーザー */
 Route::prefix('/auth')->group(function () {
@@ -87,9 +91,4 @@ Route::prefix('/auth')->group(function () {
 Route::prefix('/shops')->group(function () {
     Route::get('', [ShopController::class, 'index']);
     Route::get('/{id}', [ShopController::class, 'getById']);
-});
-
-
-Route::middleware('auth:sanctum', 'web')->group(function () {
-    Route::post('auth/logout', [AuthController::class, 'logout']);
 });
