@@ -18,7 +18,7 @@
 ## 1．URL
 以下のURLからアクセス可能です(独自ドメインの取得、ならびに常時SSL化はおこなっておりません)。
 
-http://d2kkcsthu9lh7p.cloudfront.net
+~~http://d2kkcsthu9lh7p.cloudfront.net~~ (現在公開停止中です)
 
 (フロントエンドのリポジトリは[こちら](https://github.com/AmpinNoHito/Rese-frontend))
 
